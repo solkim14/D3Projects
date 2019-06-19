@@ -4,11 +4,19 @@
     <head>
         <meta charset="utf-8">
         <title>D3 Test</title>
+		<link rel="stylesheet" type="text/css" href="index.css" media="screen" />
         <script type="text/javascript" src="d3/d3.js"></script>
     </head>
     <body>
-        <script type="text/javascript">			
-			var dataset = [5, 10, 15, 20, 25];
+        <script type="text/javascript">
+			/* Random Data Set*/
+			var dataset = [];                        //Initialize empty array
+			for (var i = 0; i < 25; i++) {           //Loop 25 times
+				var newNumber = Math.round(Math.random() * 30);  //New random number (0-30)
+				dataset.push(newNumber);             //Add new number to array
+			}
+			
+			/** print, function, logic, manipulation
 			d3.select("body").selectAll("p")
 				.data(dataset)
 				.enter()
@@ -20,8 +28,24 @@
 					if (d > 15) return "red";
 					else return "black";
 				});
-        </script>
-    </body>
+			*/
+			
+			/** bar chart - BAD PRACTICE TO DRAW WITH DIVS 
+			d3.select("body").selectAll("div")
+				.data(dataset)
+				.enter()
+				.append("div")
+				.attr("class", "bar")
+				.style("height", function(d) {
+					return (d*5) + "px"; //scale height by 5
+			});
+			*/
+		</script>
+		
+		<svg width="500" height="50">
+			<line x1="0" y1="0" x2="500" y2="50" stroke="black"/>
+		</svg>
+	</body>
 </html>     
 
-<!-- WHERE I LEFT OFF: https://alignedleft.com/tutorials/d3/drawing-divs -->
+<!-- WHERE I LEFT OFF: https://alignedleft.com/tutorials/d3/an-svg-primer Transparency -->
