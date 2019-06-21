@@ -40,12 +40,40 @@
 					return (d*5) + "px"; //scale height by 5
 			});
 			*/
-		</script>
+			
+		var dataset = [5, 10, 15, 20, 25];
+		var w=500;
+		var h=50;
 		
-		<svg width="500" height="50">
-			<line x1="0" y1="0" x2="500" y2="50" stroke="black"/>
-		</svg>
+		//creating svg space
+		var svg = d3.select("body")
+					.append("svg")
+					.attr("width",w)
+					.attr("height",h);
+		
+		//adding circles to svg based on data
+		var circles = svg.selectAll("circle")
+						.data(dataset)
+						.enter()
+						.append("circle");
+		
+		//setting circle attributes
+		circles.attr("cx", function(d, i) {
+					return (i*50) + 25;
+				})
+				.attr("cy", function(d) {
+					return h/2;
+				})
+				.attr("r", function(d) {
+					return d;
+				})
+				.attr("fill", "yellow")
+				.attr("stroke", "orange")
+				.attr("stroke-width", function(d) {
+					return d/2;
+				});
+		</script>
 	</body>
 </html>     
 
-<!-- WHERE I LEFT OFF: https://alignedleft.com/tutorials/d3/an-svg-primer Transparency -->
+<!-- WHERE I LEFT OFF: https://alignedleft.com/tutorials/d3/making-a-bar-chart -->
