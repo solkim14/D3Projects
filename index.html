@@ -30,48 +30,96 @@
 				});
 			*/
 			
-			/** bar chart - BAD PRACTICE TO DRAW WITH DIVS 
-			d3.select("body").selectAll("div")
-				.data(dataset)
-				.enter()
-				.append("div")
-				.attr("class", "bar")
-				.style("height", function(d) {
-					return (d*5) + "px"; //scale height by 5
-			});
-			*/
-			
+		/** circles
 		var dataset = [5, 10, 15, 20, 25];
 		var w=500;
 		var h=50;
 		
-		//creating svg space
-		var svg = d3.select("body")
-					.append("svg")
-					.attr("width",w)
-					.attr("height",h);
-		
-		//adding circles to svg based on data
-		var circles = svg.selectAll("circle")
-						.data(dataset)
-						.enter()
-						.append("circle");
-		
-		//setting circle attributes
-		circles.attr("cx", function(d, i) {
-					return (i*50) + 25;
-				})
-				.attr("cy", function(d) {
-					return h/2;
-				})
-				.attr("r", function(d) {
+			//creating svg space
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width",w)
+						.attr("height",h);
+			
+			//adding circles to svg based on data
+			var circles = svg.selectAll("circle")
+							.data(dataset)
+							.enter()
+							.append("circle");
+			
+			//setting circle attributes
+			circles.attr("cx", function(d, i) {
+						return (i*50) + 25;
+					})
+					.attr("cy", function(d) {
+						return h/2;
+					})
+					.attr("r", function(d) {
+						return d;
+					})
+					.attr("fill", "yellow")
+					.attr("stroke", "orange")
+					.attr("stroke-width", function(d) {
+						return d/2;
+					});
+			*/
+			
+			/* Bar Chart */
+			//var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13, 11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+			
+			var w=500;
+			var h=100;
+			var barPadding=1;
+			var dataset = [];
+			
+			var randomLength = Math.round(Math.random()*25);
+			for (var i=0; i<randomLength; i++) {
+				dataset.push(Math.round(Math.random()*h));
+			}
+
+			xPos=w/dataset.length;
+			var svg = d3.select("body") //create svg space
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+			
+			//bars
+			var bars = svg.selectAll("rect") //add bar chart
+							.data(dataset)
+							.enter()
+							.append("rect")
+							.attr("x", function(d,i) {
+								return xPos*i;
+							})
+							.attr("y", function(d) {
+								return h-d;
+							})
+							.attr("width", (w/dataset.length)-barPadding)
+							.attr("height", function(d) {
+								return d;
+							});
+			bars.attr("fill", function(d) { //set bar css
+				return "rgb(0,0," + Math.round(d*2.55) + ")";
+			});
+			
+			//text labels
+			svg.selectAll("svg")
+				.data(dataset)
+				.enter()
+				.append("text")
+				.text(function(d) {
 					return d;
 				})
-				.attr("fill", "yellow")
-				.attr("stroke", "orange")
-				.attr("stroke-width", function(d) {
-					return d/2;
-				});
+				.attr("x", function(d,i) {
+					return (xPos*i)+((xPos-barPadding)/2); //offset
+				})
+				.attr("y", function(d) {
+					return h-d+15; //offset
+				})
+				.attr("text-anchor", "middle")
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "11px")
+				.attr("fill", "white");
 		</script>
 	</body>
 </html>     
