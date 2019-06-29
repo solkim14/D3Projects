@@ -1,5 +1,5 @@
-<!-- Tutorial @ https://alignedleft.com/tutorials -->
 <!DOCTYPE html>
+<!-- Tutorial @ https://alignedleft.com/tutorials -->
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -9,66 +9,16 @@
     </head>
     <body>
         <script type="text/javascript">
-			/* Random Data Set*/
-			var dataset = [];                        //Initialize empty array
-			for (var i = 0; i < 25; i++) {           //Loop 25 times
-				var newNumber = Math.round(Math.random() * 30);  //New random number (0-30)
-				dataset.push(newNumber);             //Add new number to array
-			}
 			
-			/** print, function, logic, manipulation
-			d3.select("body").selectAll("p")
-				.data(dataset)
-				.enter()
-				.append("p")
-				.text(function(d) {
-					return "I can count up to " + d;
-				})
-				.style("color", function(d) {
-					if (d > 15) return "red";
-					else return "black";
-				});
-			*/
-			
-		/** circles
-		var dataset = [5, 10, 15, 20, 25];
-		var w=500;
-		var h=50;
-		
-			//creating svg space
+			/* SVG object*/
+			var w=500;
+			var h=300;
 			var svg = d3.select("body")
 						.append("svg")
 						.attr("width",w)
 						.attr("height",h);
 			
-			//adding circles to svg based on data
-			var circles = svg.selectAll("circle")
-							.data(dataset)
-							.enter()
-							.append("circle");
-			
-			//setting circle attributes
-			circles.attr("cx", function(d, i) {
-						return (i*50) + 25;
-					})
-					.attr("cy", function(d) {
-						return h/2;
-					})
-					.attr("r", function(d) {
-						return d;
-					})
-					.attr("fill", "yellow")
-					.attr("stroke", "orange")
-					.attr("stroke-width", function(d) {
-						return d/2;
-					});
-			*/
-			
-			/* Bar Chart */
-			//var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13, 11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
-			
-			var w=500;
-			var h=100;
+			/* Bar Chart 			
 			var barPadding=1;
 			var dataset = [];
 			
@@ -76,14 +26,8 @@
 			for (var i=0; i<randomLength; i++) {
 				dataset.push(Math.round(Math.random()*h));
 			}
-
 			xPos=w/dataset.length;
-			var svg = d3.select("body") //create svg space
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
 			
-			//bars
 			var bars = svg.selectAll("rect") //add bar chart
 							.data(dataset)
 							.enter()
@@ -120,6 +64,57 @@
 				.attr("font-family", "sans-serif")
 				.attr("font-size", "11px")
 				.attr("fill", "white");
+			*/
+			
+			/* SCATTER PLOT */
+			var dataset = [[5, 20], [480, 90], [250, 50], [100, 33], [330, 95],
+							[410, 12], [475, 44], [25, 67], [85, 21], [220, 88], [600, 150]];
+			
+			var xMax = d3.max(dataset, function(d) { return d[0]; });
+			var yMax = d3.max(dataset, function(d) { return d[1]; });
+			var padding = Math.sqrt(d3.max(dataset, function (d) {
+				return d[1];
+			})); //the maximum possible radius (calulated by Math.sqrt(yCoordinate))
+				
+			var xScale = d3.scaleLinear()
+							.domain([0, xMax])
+							.range([padding, w-(padding+30)]); //+30 to accommodate text labels
+			var yScale = d3.scaleLinear()
+								.domain([0, yMax])
+								.range([h-padding, padding]);
+			var rScale = d3.scaleLinear()
+								.domain([0,yMax])
+								.range([2,5]);
+			
+			var points = svg.selectAll("circle") //points
+							.data(dataset)
+							.enter()
+							.append("circle")
+							.attr("cx", function(d) {
+								return xScale(d[0]);
+							})
+							.attr("cy", function(d) {
+								return yScale(d[1]);
+							})
+							.attr("r", function(d) {
+								return rScale(d[1]);
+							});
+			svg.selectAll("text") //labels
+					.data(dataset)
+					.enter()
+					.append("text")
+					.text(function(d) {
+						return d[0]+","+d[1];
+					})
+					.attr("x", function(d) {
+						return xScale(d[0]);
+					})
+					.attr("y", function(d) {
+						return yScale(d[1]);
+					})
+					.attr("font-family", "sans-serif")
+					.attr("font-size", "11px")
+					.attr("fill", "red");
 		</script>
 	</body>
 </html>     
